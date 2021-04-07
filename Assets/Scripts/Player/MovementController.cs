@@ -20,7 +20,7 @@ namespace Player
         {
             var pos = gameObject.transform.position;
             
-            _reachedNextUnit = Math.Abs(_targetUnit.x - pos.x) < 0.01f && Math.Abs(_targetUnit.z - pos.z) < 0.01f;
+            _reachedNextUnit = Math.Abs(_targetUnit.x - pos.x) < 0.02f && Math.Abs(_targetUnit.z - pos.z) < 0.02f;
 
             if (!_reachedNextUnit)  {
                 Move(pos, _targetUnit);
