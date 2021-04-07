@@ -12,7 +12,7 @@ namespace Graphs
         private const int MAXLength = 28;
 
         private const float IniXPos = 8.5f; // going towards 0 = going to the right
-        private const float IniYPos = 22.2f;
+        private const float IniYPos = 22.3f;
         private const float IniZPos = -2.6f; // going towards 0 = going down
         private const float CollisionSphereRadius = 0.4f;
         
@@ -102,7 +102,7 @@ namespace Graphs
                 foreach (var node in Graph.Nodes)
                 {
                     Gizmos.color = node.NodeColor;
-                    Gizmos.DrawSphere(node.Position, 0.30f);
+                    Gizmos.DrawSphere(node.Position, 0.2f);
                 }
             }
         }
