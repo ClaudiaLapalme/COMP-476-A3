@@ -15,11 +15,23 @@ namespace Graphs
         private const float IniYPos = 22.3f;
         private const float IniZPos = -2.6f; // going towards 0 = going down
         private const float CollisionSphereRadius = 0.4f;
+
+        [SerializeField] private GameObject pacDot;
         
         #endregion
         
         public static Graph Graph;
 
+        private void Awake()
+        {
+            Initialize();
+            foreach (var node in Graph.Nodes)
+            {
+                var pos = new Vector3(node.Position.x + 0.6f, node.Position.y, node.Position.z);
+                Instantiate(pacDot, pos, Quaternion.identity);
+            }
+        }
+        
         public static void Initialize()
         {
             Graph = new Graph();
