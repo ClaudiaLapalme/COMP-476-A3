@@ -27,8 +27,7 @@ namespace Graphs
             Initialize();
             foreach (var node in Graph.Nodes)
             {
-                var pos = new Vector3(node.Position.x + 0.6f, node.Position.y, node.Position.z);
-                Instantiate(pacDot, pos, Quaternion.identity);
+                Instantiate(pacDot, node.Position, Quaternion.identity);
             }
         }
         
