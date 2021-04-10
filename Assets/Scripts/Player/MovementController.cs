@@ -18,46 +18,63 @@ namespace Player
 
         private void Update()
         {
-            var pos = gameObject.transform.position;
-            
-            _reachedNextUnit = Math.Abs(_targetUnit.x - pos.x) < 0.02f && Math.Abs(_targetUnit.z - pos.z) < 0.02f;
-
-            if (!_reachedNextUnit)  {
-                Move(pos, _targetUnit);
-                return;
-            }
-
+            var pos = transform.position;
+                       
             GetDirectionInput(pos);
+
+            _reachedNextUnit = Math.Abs(_targetUnit.x - pos.x) < 0.02f && Math.Abs(_targetUnit.z - pos.z) < 0.02f;
+            
+            Move(pos);
+
+            if (transform.position.y < 22.2f)
+            {
+                Teleport();
+            }
         }
 
         private void GetDirectionInput(Vector3 pos)
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                Move(pos, new Vector3(pos.x - 1, pos.y, pos.z));
+                _targetUnit = new Vector3(pos.x - 1, pos.y, pos.z);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                Move(pos, new Vector3(pos.x, pos.y, pos.z + 1));
+                _targetUnit = new Vector3(pos.x, pos.y, pos.z + 1);
             }
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                Move(pos, new Vector3(pos.x + 1, pos.y, pos.z));
+                _targetUnit = new Vector3(pos.x + 1, pos.y, pos.z);
             }
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                Move(pos, new Vector3(pos.x, pos.y, pos.z - 1));
+                _targetUnit = new Vector3(pos.x, pos.y, pos.z - 1);
             }
         }
 
-        private void Move(Vector3 pos, Vector3 unit)
+        private void Move(Vector3 pos)
         {
-            if (Physics.CheckSphere(unit, 0.5f, LayerMask))
+            if (Physics.CheckSphere(_targetUnit, 0.5f, LayerMask) && !_reachedNextUnit)
             {
-                _targetUnit = unit;
-                _reachedNextUnit = false;
                 transform.Translate((_targetUnit - pos).normalized * (speed * Time.deltaTime));
             }
+        }
+        
+        private void Teleport()
+        {
+            //transform.Rotate(0, 180, 0);
+            _reachedNextUnit = true;
+
+            if (transform.position.z < -2.5f) // fell from the left side
+            {
+                gameObject.transform.position = new Vector3(transform.position.x, 22.5f, 24.4f);
+            }
+            else
+            {
+                gameObject.transform.position = new Vector3(transform.position.x, 22.5f, -2.5f);
+            }
+
+            _targetUnit = transform.position;
         }
     }
 }
