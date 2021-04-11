@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6851345090012279597}
   - component: {fileID: 7239919113506277998}
   - component: {fileID: 5334248383764912594}
-  - component: {fileID: 3761938652441961111}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -80,19 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &3761938652441961111
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2503627061743242972}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2818449274488563030
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +90,6 @@ GameObject:
   - component: {fileID: 3695908036632499683}
   - component: {fileID: 4831158051159295492}
   - component: {fileID: 4770902827474362800}
-  - component: {fileID: 4599410722331245622}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -173,19 +158,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &4599410722331245622
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2818449274488563030}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5135142246507357801
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +171,7 @@ GameObject:
   - component: {fileID: 5575545619792877688}
   m_Layer: 0
   m_Name: Pac-Dot
-  m_TagString: Untagged
+  m_TagString: PacDot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
