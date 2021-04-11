@@ -25,6 +25,21 @@ namespace Ghost
         #endregion
 
         /**
+         * Reinitialize the variables of the algo to be able to call it multiple times in one run
+         */
+        private void ReinitializePathfindingAlgo()
+        {
+            OpenList.Clear();
+            ClosedList.Clear();
+
+            _initialNode = null;
+            _finalNode = null;
+            
+            _isInitialNode = false;
+            _destinationReached = false;
+        }
+        
+        /**
          * Finds the node closest to the player when the game starts and puts it on the open list
          */
         private void FindStartNode(Vector3 playerPos)
@@ -51,12 +66,15 @@ namespace Ghost
          * Handles all of the computation to find the shortest path
          * return the shortest path
          */
-        public List<Graph.Node> ComputePathfinding(Vector3 playerPos, Vector3 finalDestination)
+        public List<Graph.Node> ComputePathfinding(Vector3 ghostPos, Vector3 finalDestination)
         {
+            ReinitializePathfindingAlgo();
+
             // start with the initial node
-            FindStartNode(playerPos);
+            FindStartNode(ghostPos);
 
             var currentNode = _initialNode;
+            
 
             // if you start at the destination, you don't need to move
             if (currentNode.Position == finalDestination)
@@ -89,6 +107,7 @@ namespace Ghost
             while (currentNode.Parent != null)
             {
                 shortestPath.Add(currentNode);
+                currentNode.NodeColor = Color.grey;
                 currentNode = currentNode.Parent;
             }
 
@@ -135,7 +154,7 @@ namespace Ghost
          */
         private void HandleNeighbourNodes(Graph.Node currentNode, Vector3 finalDestination)
         {
-            // find q's (up to) 8 neighbours
+            // find q's (up to) 4 neighbours
             var neighbours = NodeUtils.NeighbourNodes(currentNode);
 
             foreach (var neighbourNode in neighbours)

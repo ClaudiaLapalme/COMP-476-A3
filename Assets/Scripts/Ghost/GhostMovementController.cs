@@ -16,11 +16,9 @@ namespace Ghost
 
         #region private variables
 
-        private int _pathIndex;
         private float _currentAcceleration;
-
         private Vector3 _destination;
-
+        private GameObject _player;
         private Pathfinding _pathfinding;
         private List<Graph.Node> _shortestPath = new List<Graph.Node>();
         private Graph.Node _currentNode;
@@ -33,29 +31,32 @@ namespace Ghost
             {
                 TileGraph.Initialize();
             }
-            
+
+            _player = GameObject.Find("PacPerson");
             _pathfinding = new Pathfinding();
-
-            _destination = GameObject.Find("PacPerson").transform.position;
-
+            _destination = _player.transform.position;
+            
             _shortestPath = _pathfinding.ComputePathfinding(transform.position, _destination);
-            TargetNode(_pathIndex);
+            TargetNode();
         }
 
         private void Update()
         {
+
             if (Vector3.Distance(transform.position, _destination) < 0.05f)
             {
                 // TODO: handle the scenario where the ghost has collided with the player
             }
             else if (Vector3.Distance(transform.position, _currentNode.Position) < 0.05f)
             {
-                TargetNode(++_pathIndex);
+                _destination = _player.transform.position;
+                _shortestPath = _pathfinding.ComputePathfinding(transform.position, _destination);
+                TargetNode();
             }
 
             SteeringArrive();
         }
-        
+
         /**
          * Steering is used to navigated from the current position to the next node in the algorithm.
          */
@@ -67,18 +68,19 @@ namespace Ghost
             // if you are not in the slowdown radius, keep approaching at full speed
             if (distanceFromTarget > 0)
             {
-                transform.Translate((_currentNode.Position - transform.position).normalized *
-                                    (_currentAcceleration * Time.deltaTime));
+                transform.position = Vector3.MoveTowards(transform.position, _currentNode.Position,
+                    (_currentAcceleration * Time.deltaTime));
             }
             else
             {
                 transform.Translate(Vector3.zero);
             }
         }
-        
-        private void TargetNode(int index)
+
+        private void TargetNode()
         {
-            _currentNode = _shortestPath[index];
+            _currentNode = _shortestPath[0];
+            _currentNode.NodeColor = Color.cyan;
         }
     }
 }

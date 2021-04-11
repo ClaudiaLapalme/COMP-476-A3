@@ -17,9 +17,9 @@ namespace Graphs
         private const float CollisionSphereRadius = 0.4f;
 
         [SerializeField] private GameObject pacDot;
-        
+
         #endregion
-        
+
         public static Graph Graph;
 
         private void Awake()
@@ -30,7 +30,7 @@ namespace Graphs
                 Instantiate(pacDot, node.Position, Quaternion.identity);
             }
         }
-        
+
         public static void Initialize()
         {
             Graph = new Graph();
@@ -70,12 +70,7 @@ namespace Graphs
                 var nodeRight =
                     Graph.Nodes.Find(
                         node => node.Position == new Vector3(nodePos.x + 1, nodePos.y, nodePos.z));
-                var nodeTopRight =
-                    Graph.Nodes.Find(node =>
-                        node.Position == new Vector3(nodePos.x + 1, nodePos.y, nodePos.z + 1));
-                var nodeBottomRight =
-                    Graph.Nodes.Find(node =>
-                        node.Position == new Vector3(nodePos.x + 1, nodePos.y, nodePos.z - 1));
+
                 var nodeBottom =
                     Graph.Nodes.Find(
                         node => node.Position == new Vector3(nodePos.x, nodePos.y, nodePos.z - 1));
@@ -83,16 +78,6 @@ namespace Graphs
                 if (nodeRight != null && !Physics.Linecast(nodePos, nodeRight.Position))
                 {
                     Graph.Edges.Add(new Graph.Edge(Graph.Nodes[i], nodeRight));
-                }
-
-                if (nodeTopRight != null && !Physics.Linecast(nodePos, nodeTopRight.Position))
-                {
-                    Graph.Edges.Add(new Graph.Edge(Graph.Nodes[i], nodeTopRight));
-                }
-
-                if (nodeBottomRight != null && !Physics.Linecast(nodePos, nodeBottomRight.Position))
-                {
-                    Graph.Edges.Add(new Graph.Edge(Graph.Nodes[i], nodeBottomRight));
                 }
 
                 if (nodeBottom != null && !Physics.Linecast(nodePos, nodeBottom.Position))

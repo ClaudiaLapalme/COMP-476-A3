@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Player;
+using Structs;
+using UnityEngine;
 
 namespace Ghost
 {
@@ -10,6 +12,11 @@ namespace Ghost
             {
                 Physics.IgnoreCollision(gameObject.GetComponent<Collider>(),
                     other.gameObject.GetComponentInChildren<Collider>());
+            }
+            else if (other.gameObject.CompareTag("Player"))
+            {
+                var initPos = other.gameObject.GetComponent<PlayerDataController>().PlayerData.InitialPosition;
+                other.gameObject.transform.position = initPos;
             }
         }
     }
