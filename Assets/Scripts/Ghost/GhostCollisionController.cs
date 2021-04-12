@@ -1,5 +1,4 @@
 ﻿using Player;
-using Structs;
 using UnityEngine;
 
 namespace Ghost
@@ -8,7 +7,8 @@ namespace Ghost
     {
         private void OnCollisionEnter(Collision other)
         {
-            if (other.gameObject.CompareTag($"PacDot"))
+            // Pass through other ghosts and pac dots
+            if (other.gameObject.CompareTag($"PacDot") || other.gameObject.CompareTag($"Ghost")) 
             {
                 Physics.IgnoreCollision(gameObject.GetComponent<Collider>(),
                     other.gameObject.GetComponentInChildren<Collider>());
