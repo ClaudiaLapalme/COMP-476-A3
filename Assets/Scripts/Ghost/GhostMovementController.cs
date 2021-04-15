@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Graphs;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Ghost
@@ -18,6 +19,7 @@ namespace Ghost
 
         private float _currentAcceleration;
         private Vector3 _destination;
+        private List<GameObject> _playerList = new List<GameObject>();
         private GameObject _player;
         private Pathfinding _pathfinding;
         private List<Graph.Node> _shortestPath = new List<Graph.Node>();
@@ -27,27 +29,31 @@ namespace Ghost
 
         private void Start()
         {
-            if (TileGraph.Graph == null)
-            {
-                TileGraph.Initialize();
-            }
+            UpdatePlayerList();
+            FollowClosestPlayer();
 
-            _player = GameObject.Find("PacPerson");
             _pathfinding = new Pathfinding();
             _destination = _player.transform.position;
-            
+
             _shortestPath = _pathfinding.ComputePathfinding(transform.position, _destination);
             TargetNode();
         }
 
         private void Update()
         {
-
-            if (Vector3.Distance(transform.position, _destination) < 0.05f)
+            if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.IsConnected)
             {
-                // TODO: handle the scenario where the ghost has collided with the player
+                return;
             }
-            else if (Vector3.Distance(transform.position, _currentNode.Position) < 0.05f)
+
+            if (_playerList.Count != PhotonNetwork.CurrentRoom.PlayerCount)
+            {
+                UpdatePlayerList();
+            }
+            
+            FollowClosestPlayer();
+
+            if (Vector3.Distance(transform.position, _currentNode.Position) < 0.05f)
             {
                 _destination = _player.transform.position;
                 _shortestPath = _pathfinding.ComputePathfinding(transform.position, _destination);
@@ -81,6 +87,31 @@ namespace Ghost
         {
             _currentNode = _shortestPath[0];
             _currentNode.NodeColor = Color.cyan;
+        }
+
+        private void FollowClosestPlayer()
+        {
+            foreach (var player in _playerList)
+            {
+                if (_player == null)
+                {
+                    _player = player;
+                }
+                else if (Vector3.Distance(player.transform.position, transform.position) <
+                         Vector3.Distance(_player.transform.position, transform.position))
+                {
+                    _player = player;
+                }
+            }
+        }
+
+        private void UpdatePlayerList()
+        {
+            _playerList = new List<GameObject>();
+            for (var i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
+            {
+                _playerList.Add(GameObject.FindWithTag("Player"));
+            }
         }
     }
 }

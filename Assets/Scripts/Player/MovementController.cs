@@ -1,4 +1,5 @@
 ﻿using System;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Player
@@ -18,6 +19,11 @@ namespace Player
 
         private void Update()
         {
+            if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.IsConnected)
+            {
+                return;
+            }
+            
             var pos = transform.position;
                        
             GetDirectionInput(pos);
