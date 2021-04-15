@@ -46,11 +46,11 @@ namespace Ghost
                 return;
             }
 
-            if (_playerList.Count != PhotonNetwork.CurrentRoom.PlayerCount)
+            if (_playerList.Count != GameObject.FindGameObjectsWithTag("Player").Length)
             {
                 UpdatePlayerList();
             }
-            
+
             FollowClosestPlayer();
 
             if (Vector3.Distance(transform.position, _currentNode.Position) < 0.05f)
@@ -108,9 +108,9 @@ namespace Ghost
         private void UpdatePlayerList()
         {
             _playerList = new List<GameObject>();
-            for (var i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
+            foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
             {
-                _playerList.Add(GameObject.FindWithTag("Player"));
+                _playerList.Add(player);
             }
         }
     }
