@@ -1,5 +1,6 @@
 ﻿using System;
 using Photon.Pun;
+using Structs;
 using UnityEngine;
 
 namespace Player
@@ -23,18 +24,19 @@ namespace Player
             {
                 return;
             }
-            
+
             var pos = transform.position;
-                       
+
+            TeleportedByGhost();
             GetDirectionInput(pos);
 
             _reachedNextUnit = Math.Abs(_targetUnit.x - pos.x) < 0.02f && Math.Abs(_targetUnit.z - pos.z) < 0.02f;
-            
+
             Move(pos);
 
             if (transform.position.y < 22.2f)
             {
-                Teleport();
+                TeleportItself();
             }
         }
 
@@ -65,10 +67,9 @@ namespace Player
                 transform.Translate((_targetUnit - pos).normalized * (speed * Time.deltaTime));
             }
         }
-        
-        private void Teleport()
+
+        private void TeleportItself()
         {
-            //transform.Rotate(0, 180, 0);
             _reachedNextUnit = true;
 
             if (transform.position.z < -2.5f) // fell from the left side
@@ -81,6 +82,17 @@ namespace Player
             }
 
             _targetUnit = transform.position;
+        }
+
+        private void TeleportedByGhost()
+        {
+            var playerData = GetComponent<PlayerDataController>().PlayerData;
+            if (playerData.WasTeleported)
+            {
+                _targetUnit = transform.position;
+                GetComponent<PlayerDataController>().PlayerData =
+                    new PlayerData(playerData.InitialPosition, playerData.Score, false);
+            }
         }
     }
 }

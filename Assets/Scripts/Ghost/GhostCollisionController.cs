@@ -1,4 +1,5 @@
 ﻿using Player;
+using Structs;
 using UnityEngine;
 
 namespace Ghost
@@ -15,7 +16,10 @@ namespace Ghost
             }
             else if (other.gameObject.CompareTag("Player"))
             {
-                var initPos = other.gameObject.GetComponent<PlayerDataController>().PlayerData.InitialPosition;
+                var playerData = other.gameObject.GetComponent<PlayerDataController>().PlayerData;
+                var initPos = playerData.InitialPosition;
+                var score = playerData.Score;
+                other.gameObject.GetComponent<PlayerDataController>().PlayerData = new PlayerData(initPos, score, true);
                 other.gameObject.transform.position = initPos;
             }
         }

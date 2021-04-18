@@ -13,7 +13,7 @@ namespace PacDot
                 var playerData = other.GetComponent<PlayerDataController>().PlayerData;
                 playerData.Score++;
                 other.GetComponent<PlayerDataController>().PlayerData =
-                    new PlayerData(playerData.InitialPosition, playerData.Score);
+                    new PlayerData(playerData.InitialPosition, playerData.Score, false);
                 Destroy(gameObject);
             }
         }
